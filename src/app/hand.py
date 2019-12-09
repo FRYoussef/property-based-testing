@@ -1,6 +1,6 @@
 from enum import Enum
 
-from src.app.card import Card, Suit, Value
+from src.app.card import Card, Suit, Value, MAX_VALUE
 
 class Result(Enum):
     WIN = 0
@@ -27,7 +27,13 @@ class Hand():
         self.play = Play.NONE
         self.value = 0
 
+    def __repr__(self) -> str:
+        return self.representation()
+
     def __str__(self) -> str:
+        return self.representation()
+
+    def representation(self) -> str:
         tmp = "["
         for card in self.cards:
             tmp += f"| {card.__str__()} "
@@ -36,7 +42,7 @@ class Hand():
         tmp += f"]  =>  {self.play.name}"
         return tmp
 
-    def compare_hands(self, hand) -> Result:
+    def compare(self, hand) -> Result:
         """
         States whether self wins, losses or ties against hand
         """
@@ -97,11 +103,27 @@ def get_straight(classification: dict) -> int:
     returns 0 if it couldn't find the play
     """
     val = 0
-    for i in range(Value.ACE.value):
-        if val and not classification[i]:
-            return 0
+    followers = 0
+    for i in range(Value.ACE.value+1):
+        if followers and not classification[i]:
+            val = 0
+            followers = 0
+            break
         if classification[i]:
             val += i + Card.CONVERSION
+            followers += 1
+        if followers == 5:
+            return val
+
+    if not val:
+        for i in range(Value.ACE.value, Value.ACE.value*2+1):
+            if followers and not classification[i % MAX_VALUE]:
+                return 0
+            if classification[i % MAX_VALUE]:
+                val += i % MAX_VALUE + Card.CONVERSION
+                followers += 1
+            if followers == 5:
+                return val
 
     return val
 

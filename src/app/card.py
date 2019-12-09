@@ -1,13 +1,22 @@
 from enum import Enum
 import random
 
+MAX_VALUE = 13
+MAX_SUIT = 4
+
 class Suit(Enum):
     SPADES = 0
     HEARTS = 1
     CLUBS = 2
     DIAMONDS = 3
 
+    def __repr__(self) -> str:
+        return self.representation()
+
     def __str__(self) -> str:
+        return self.representation()
+
+    def representation(self) -> str:
         out = ""
         if self.value == Suit.SPADES.value:
             out = "s"
@@ -20,6 +29,10 @@ class Suit(Enum):
         else:
             out = "NONE"
         return out
+
+    def next(self):
+        return Suit((self.value + 1) % MAX_SUIT)
+
 
 
 class Value(Enum):
@@ -37,7 +50,13 @@ class Value(Enum):
     KING = 11
     ACE = 12
 
+    def __repr__(self) -> str:
+        return self.representation()
+
     def __str__(self) -> str:
+        return self.representation()
+
+    def representation(self) -> str:
         out = ""
         if self.value == Value.TWO.value:
             out = "2"
@@ -69,6 +88,9 @@ class Value(Enum):
             out = "NONE"
         return out
 
+    def next(self):
+        return Value((self.value + 1) % MAX_VALUE)
+
 
 class Card():
     CONVERSION = 2
@@ -77,7 +99,13 @@ class Card():
         self.suit = suit
         self.val = val
 
+    def __repr__(self) -> str:
+        return self.representation()
+
     def __str__(self) -> str:
+        return self.representation()
+
+    def representation(self) -> str:
         return f"{self.val}{self.suit}"
 
     def get_val(self) -> int:
@@ -90,7 +118,13 @@ class Deck():
     def __init__(self) -> None:
         self.deck = {Card(s, v) for v in Value for s in Suit}
 
+    def __repr__(self) -> str:
+        return self.representation()
+
     def __str__(self) -> str:
+        return self.representation()
+
+    def representation(self) -> str:
         out = "Deck = ["
         for c in self.deck:
             out += f"| {c} "
