@@ -8,6 +8,20 @@ class Suit(Enum):
     DIAMONDS = 3
     NONE = 4
 
+    def __str__(self):
+        out = ""
+        if self.value == Suit.SPADES.value:
+            out = "s"
+        elif self.value == Suit.HEARTS.value:
+            out = "h"
+        elif self.value == Suit.CLUBS.value:
+            out = "c"
+        elif self.value == Suit.DIAMONDS.value:
+            out = "d"
+        else:
+            out = "NONE"
+        return out
+
 
 class Value(Enum):
     TWO = 0
@@ -25,6 +39,36 @@ class Value(Enum):
     ACE = 12
     NONE = 13
 
+    def __str__(self):
+        out = ""
+        if self.value == Value.TWO.value:
+            out = "2"
+        elif self.value == Value.THREE.value:
+            out = "3"
+        elif self.value == Value.FOUR.value:
+            out = "4"
+        elif self.value == Value.FIVE.value:
+            out = "5"
+        elif self.value == Value.SIX.value:
+            out = "6"
+        elif self.value == Value.SEVEN.value:
+            out = "7"
+        elif self.value == Value.EIGHT.value:
+            out = "8"
+        elif self.value == Value.NINE.value:
+            out = "9"
+        elif self.value == Value.TEN.value:
+            out = "T"
+        elif self.value == Value.JACK.value:
+            out = "J"
+        elif self.value == Value.QUEEN.value:
+            out = "Q"
+        elif self.value == Value.KING.value:
+            out = "K"
+        elif self.value == Value.ACE.value:
+            out = "A"
+        return out
+
 
 class Card():
 
@@ -35,7 +79,7 @@ class Card():
         self.val = val
 
     def __str__(self):
-        return f"{self.val.name} of {self.suit.name}"
+        return f"{self.val}{self.suit}"
 
     def get_val(self) -> int:
         return self.val.value + self.CONVERSION

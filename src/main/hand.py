@@ -28,16 +28,34 @@ class Hand():
         self.value = 0
 
     def __str__(self):
-        tmp = ""
+        tmp = "["
         for card in self.cards:
             tmp += f"| {card.__str__()} "
 
-        tmp += f"|  =>  {self.play.name}"
+        tmp = tmp.replace("|", "", 1)
+        tmp += f"]  =>  {self.play.name}"
         return tmp
 
+    def compareHands(self, hand: Hand) -> Result:
+        """
+        States whether self wins, losses or ties against hand
+        """
+        if self.play.value > hand.play.value:
+            return Result.WIN
+        elif self.play.value < hand.play.value:
+            return Result.LOSE
+        else:
+            if self.value == hand.value:
+                return Result.TIE
+
+            return Result.WIN if self.value > hand.value else Result.LOSE
 
 
 def classify(hand: Hand) -> dict:
+    """
+    Takes a hand obj and classifies its cards in order to see which values
+    are repeated.
+    """
     classification = {v : 0 for v in range(Value.ACE.value)}
     for card in hand.cards:
         classification[card.get_val()] += 1 
@@ -45,6 +63,15 @@ def classify(hand: Hand) -> dict:
     return classification
 
 def get_combined_play(n: int, m: int, classification: dict) -> int:
+    """
+    Takes two int values and a dict returned by classify method.
+    Int values are used to look for repeated cards.
+    E.g. if you call get_combined_play(2, 2, c), you'll look for two pair.
+    if you call get_combined_play(4, 0, c), you'll look for four of a kind.
+
+    returns a value>0 which is the score of the play
+    returns 0 if it couldn't find the play
+    """
     times_updated_first = 0
     times_updated_second = 0
     val = 0
@@ -65,6 +92,10 @@ def get_combined_play(n: int, m: int, classification: dict) -> int:
         return 0
 
 def get_straight(classification: dict) -> int:
+    """
+    returns a value>0 which is the score of the play
+    returns 0 if it couldn't find the play
+    """
     val = 0
     for i in range(Value.ACE.value):
         if val and not classification[i]:
@@ -75,6 +106,10 @@ def get_straight(classification: dict) -> int:
     return val
 
 def get_flush(hand: Hand) -> int:
+    """
+    returns a value>0 which is the score of the play
+    returns 0 if it couldn't find the play
+    """
     cards = list(hand.cards)
     val = cards[0].get_val()
     suit = cards[0].suit
@@ -86,9 +121,15 @@ def get_flush(hand: Hand) -> int:
     return val
 
 def get_high_card(hand: Hand) -> int:
+    """
+    returns the highest card value in the hand
+    """
     return max(hand.cards, key=Card.get_val).get_val()
 
 def calculate_play_hand(hand: Hand):
+    """
+    calculates the hand play and its value 
+    """
     classification = classify(hand)
 
     # Straight flush
@@ -152,4 +193,4 @@ if __name__ == '__main__':
     Card(Suit.SPADES, Value.EIGHT), 
     Card(Suit.CLUBS, Value.ACE)])
 
-    print(get_high_card(hand))
+    print(hand)
