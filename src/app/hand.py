@@ -1,6 +1,6 @@
 from enum import Enum
 
-from card import Card, Suit, Value
+from src.app.card import Card, Suit, Value
 
 class Result(Enum):
     WIN = 0
@@ -36,7 +36,7 @@ class Hand():
         tmp += f"]  =>  {self.play.name}"
         return tmp
 
-    def compareHands(self, hand) -> Result:
+    def compare_hands(self, hand) -> Result:
         """
         States whether self wins, losses or ties against hand
         """

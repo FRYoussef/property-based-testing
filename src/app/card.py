@@ -1,12 +1,11 @@
 from enum import Enum
-
+import random
 
 class Suit(Enum):
     SPADES = 0
     HEARTS = 1
     CLUBS = 2
     DIAMONDS = 3
-    NONE = 4
 
     def __str__(self) -> str:
         out = ""
@@ -37,7 +36,6 @@ class Value(Enum):
     QUEEN = 10
     KING = 11
     ACE = 12
-    NONE = 13
 
     def __str__(self) -> str:
         out = ""
@@ -67,11 +65,12 @@ class Value(Enum):
             out = "K"
         elif self.value == Value.ACE.value:
             out = "A"
+        else:
+            out = "NONE"
         return out
 
 
 class Card():
-
     CONVERSION = 2
 
     def __init__(self, suit: Suit, val: Value) -> None:
@@ -85,5 +84,33 @@ class Card():
         return self.val.value + self.CONVERSION
 
 
+class Deck():
+    TOTAL_CARDS = 52
+
+    def __init__(self) -> None:
+        self.deck = {Card(s, v) for v in Value for s in Suit}
+
+    def __str__(self) -> str:
+        out = "Deck = ["
+        for c in self.deck:
+            out += f"| {c} "
+        out = out.replace("|", "", 1)
+        out += "]"
+        return out
+
+    def get_random_card(self) -> Card:
+        if len(self.deck) == 0:
+            return None
+
+        card = random.choice(list(self.deck))
+        self.deck.remove(card)
+        return card
+
+    def set_card(self, card: Card) -> None:
+        if not card in self.deck:
+            self.deck.add(card)
+
+
 if __name__ == '__main__':
-    print(Card(Suit.CLUBS, Value.TEN))
+    d = Deck()
+    print(d)
