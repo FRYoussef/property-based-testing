@@ -8,7 +8,7 @@ class Suit(Enum):
     DIAMONDS = 3
     NONE = 4
 
-    def __str__(self):
+    def __str__(self) -> str:
         out = ""
         if self.value == Suit.SPADES.value:
             out = "s"
@@ -39,7 +39,7 @@ class Value(Enum):
     ACE = 12
     NONE = 13
 
-    def __str__(self):
+    def __str__(self) -> str:
         out = ""
         if self.value == Value.TWO.value:
             out = "2"
@@ -74,11 +74,11 @@ class Card():
 
     CONVERSION = 2
 
-    def __init__(self, suit: Suit, val: Value):
+    def __init__(self, suit: Suit, val: Value) -> None:
         self.suit = suit
         self.val = val
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.val}{self.suit}"
 
     def get_val(self) -> int:

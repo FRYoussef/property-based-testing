@@ -22,12 +22,12 @@ class Play(Enum):
 
 
 class Hand():
-    def __init__(self, cards: set):
+    def __init__(self, cards: set) -> None:
         self.cards = cards if len(cards) == 5 else set() 
         self.play = Play.NONE
         self.value = 0
 
-    def __str__(self):
+    def __str__(self) -> str:
         tmp = "["
         for card in self.cards:
             tmp += f"| {card.__str__()} "
@@ -36,7 +36,7 @@ class Hand():
         tmp += f"]  =>  {self.play.name}"
         return tmp
 
-    def compareHands(self, hand: Hand) -> Result:
+    def compareHands(self, hand) -> Result:
         """
         States whether self wins, losses or ties against hand
         """
@@ -56,9 +56,9 @@ def classify(hand: Hand) -> dict:
     Takes a hand obj and classifies its cards in order to see which values
     are repeated.
     """
-    classification = {v : 0 for v in range(Value.ACE.value)}
+    classification = {v : 0 for v in range(Value.ACE.value+1)}
     for card in hand.cards:
-        classification[card.get_val()] += 1 
+        classification[card.val.value] += 1 
 
     return classification
 
@@ -192,5 +192,7 @@ if __name__ == '__main__':
     Card(Suit.HEARTS, Value.TEN), 
     Card(Suit.SPADES, Value.EIGHT), 
     Card(Suit.CLUBS, Value.ACE)])
+
+    calculate_play_hand(hand)
 
     print(hand)
