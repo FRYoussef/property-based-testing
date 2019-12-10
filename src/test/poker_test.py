@@ -18,10 +18,12 @@ NaiveHandStrategy = st.builds(Hand, st.sets(
 
 @st.composite
 def three_of_a_kind_in_hand(draw) -> Hand:
-    cards = set()
+    d = draw(DeckStrategy)
+    r = draw(st.randoms())
+
     #1
-    sample = Card(random.choice(list(Suit)), random.choice(list(Value)))
-    cards.add(sample)
+    sample = r.choice(list(d.deck))
+    cards = set([sample])
     #2
     sample = Card(sample.suit.next(), sample.val.next())
     cards.add(sample)
@@ -40,10 +42,12 @@ def three_of_a_kind_in_hand(draw) -> Hand:
 
 @st.composite
 def full_house_in_hand(draw) -> Hand:
-    cards = set()
+    d = draw(DeckStrategy)
+    r = draw(st.randoms())
+
     #1
-    sample = Card(random.choice(list(Suit)), random.choice(list(Value)))
-    cards.add(sample)
+    sample = r.choice(list(d.deck))
+    cards = set([sample])
     #2
     sample = Card(sample.suit.next(), sample.val)
     cards.add(sample)
@@ -63,22 +67,24 @@ def full_house_in_hand(draw) -> Hand:
 @st.composite
 def straight_in_hand(draw) -> Hand:
     blacklist = {Value.JACK, Value.QUEEN, Value.KING}
-    v = random.choice(list(Value))
+    d = draw(DeckStrategy)
+    r = draw(st.randoms())
 
-    #assume(not v in blacklist)
+    sample = r.choice(list(d.deck))
 
-    while v in blacklist:
-        v = random.choice(list(Value))
+    assume(not sample.val in blacklist)
 
-    cards = set()
-    sample = Card(random.choice(list(Suit)), v)
-    cards.add(sample)
+    # while v in blacklist:
+    #     v = random.choice(list(Value))
 
+    cards = set([sample])
     for _ in range(4):
         sample = Card(sample.suit.next(), sample.val.next())
         cards.add(sample)
 
     return Hand(cards)
+
+
 
 class PokerTest(unittest.TestCase):
 
@@ -102,7 +108,7 @@ class PokerTest(unittest.TestCase):
                 withdraws.remove(card)
                 d.set_card(card)
 
-        assert len(withdraws) + len(d.deck) == Deck.TOTAL_CARDS
+        self.assertEqual(len(withdraws) + len(d.deck), Deck.TOTAL_CARDS)
 
 
     @given(hand=NaiveHandStrategy)
@@ -115,28 +121,28 @@ class PokerTest(unittest.TestCase):
     @given(hand=three_of_a_kind_in_hand())
     def test_three_of_a_kind(self, hand: Hand) -> None:
         calculate_play_hand(hand)
-        assert hand.play == Play.THREE_OF_A_KIND
+        self.assertEqual(hand.play, Play.THREE_OF_A_KIND)
 
 
     @given(hand=full_house_in_hand())
     def test_full_house(self, hand: Hand) -> None:
         calculate_play_hand(hand)
-        assert hand.play == Play.FULL_HOUSE
+        self.assertEqual(hand.play, Play.FULL_HOUSE)
 
 
     @given(hand=straight_in_hand())
     def test_straight(self, hand: Hand) -> None:
         calculate_play_hand(hand)
-        assert hand.play == Play.STRAIGHT
+        self.assertEqual(hand.play, Play.STRAIGHT)
 
 
     @given(hand1=st.one_of(full_house_in_hand(), straight_in_hand()),
             hand2=st.one_of(three_of_a_kind_in_hand()))
-    @settings(verbosity=Verbosity.verbose, max_examples=1000)
+    #@settings(verbosity=Verbosity.verbose)
     def test_two_hands(self, hand1: Hand, hand2: Hand) -> None:
         calculate_play_hand(hand1)
         calculate_play_hand(hand2)
-        assert Result.WIN == hand1.compare(hand2)
+        self.assertEqual(Result.WIN, hand1.compare(hand2))
 
 if __name__ == "__main__":
     unittest.main()

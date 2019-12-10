@@ -39,7 +39,7 @@ class Hand():
             tmp += f"| {card.__str__()} "
 
         tmp = tmp.replace("|", "", 1)
-        tmp += f"]  =>  {self.play.name}"
+        tmp += "]"
         return tmp
 
     def compare(self, hand) -> Result:
@@ -106,8 +106,6 @@ def get_straight(classification: dict) -> int:
     followers = 0
     for i in range(Value.ACE.value+1):
         if followers and not classification[i]:
-            val = 0
-            followers = 0
             break
         if classification[i]:
             val += i + Card.CONVERSION
@@ -115,8 +113,10 @@ def get_straight(classification: dict) -> int:
         if followers == 5:
             return val
 
-    if not val:
-        for i in range(Value.ACE.value, Value.ACE.value*2+1):
+    if not followers == 5:
+        val = 0
+        followers = 0
+        for i in range(Value.ACE.value, Value.ACE.value*2):
             if followers and not classification[i % MAX_VALUE]:
                 return 0
             if classification[i % MAX_VALUE]:
@@ -125,7 +125,7 @@ def get_straight(classification: dict) -> int:
             if followers == 5:
                 return val
 
-    return val
+    return 0
 
 def get_flush(hand: Hand) -> int:
     """
