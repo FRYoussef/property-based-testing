@@ -3,6 +3,8 @@ PBT is a black-box testing technique, which generates random inputs to test whet
 
 More info: https://en.wikipedia.org/wiki/Random_testing
 
+The PBT implementation I've used is [Hypothesis](https://hypothesis.readthedocs.io/en/latest/).
+
 ## 2. Requeriments to run the code
 This should work in any machine with =<python3.6.
 
@@ -18,4 +20,5 @@ Activate it with: ```source venv/bin/activate```
 Finally, you can install the dependencies with : ```pip install -r requirements.txt```
 
 ## 3. How to run tests?
-To run tests use: ```python3 -m src.test.poker_test```
+If you want to run poker tests, then use: ```python3 -m src.poker.test.poker_test```
+Otherwise run it as a normal script, e.g. ```python3 src/stateful_testing/die_hard.py```
