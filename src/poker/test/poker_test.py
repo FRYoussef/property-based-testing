@@ -1,9 +1,9 @@
 import unittest
-from hypothesis import given, settings, assume, Verbosity, strategies as st
 import random
+from hypothesis import given, settings, assume, Verbosity, strategies as st
 
-from src.app.card import Deck, Card, Suit, Value
-from src.app.hand import Hand, Play, Result, calculate_play_hand
+from src.poker.app.card import Deck, Card, Suit, Value
+from src.poker.app.hand import Hand, Play, Result, calculate_play_hand
 
 
 DeckStrategy = st.builds(Deck)

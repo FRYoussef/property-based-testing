@@ -1,6 +1,6 @@
 from enum import Enum
 
-from src.app.card import Card, Suit, Value, MAX_VALUE
+from src.poker.app.card import Card, Suit, Value, MAX_VALUE
 
 class Result(Enum):
     WIN = 0
