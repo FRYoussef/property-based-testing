@@ -21,4 +21,5 @@ Finally, you can install the dependencies with : ```pip install -r requirements.
 
 ## 3. How to run tests?
 If you want to run poker tests, then use: ```python3 -m src.poker.test.poker_test```
+
 Otherwise run it as a normal script, e.g. ```python3 src/stateful_testing/die_hard.py```
