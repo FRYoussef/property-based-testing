@@ -65,7 +65,5 @@ class DieHard(RuleBasedStateMachine):
 
 
 
-if __name__ == "__main__":
-    DieHard.TestCase.settings = settings(max_examples=200, stateful_step_count=100)
-    DieHardTest = DieHard.TestCase
-    unittest.main()
+DieHard.TestCase.settings = settings(max_examples=200, stateful_step_count=100)
+DieHardTest = DieHard.TestCase

@@ -20,6 +20,7 @@ Activate it with: ```source venv/bin/activate```
 Finally, you can install the dependencies with : ```pip install -r requirements.txt```
 
 ## 3. How to run tests?
-If you want to run poker tests, then use: ```python3 -m src.poker.test.poker_test```
+Run any test with pytest, e.g. ```pytest src/stateful_examples/die_hard.py ```
 
-Otherwise run it as a normal script, e.g. ```python3 src/stateful_testing/die_hard.py```
+Use this flag ```--hypothesis-show-statistics``` to show statistics.
+Use the flag ```--hypothesis-seed=10``` to set a fixed seed, it's useful to reproduce a failure.
