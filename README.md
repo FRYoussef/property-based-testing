@@ -24,4 +24,4 @@ Run any test with pytest, e.g. ```pytest src/stateful_examples/die_hard.py ```
 
 Use this flag ```--hypothesis-show-statistics``` to show statistics.
 
-Use the flag ```--hypothesis-seed=10``` to set a fixed seed, it's useful to reproduce a failure.
+Use the flag ```--hypothesis-seed=<int>``` to set a fixed seed, it's useful to reproduce a failure.
